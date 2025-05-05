@@ -30,6 +30,10 @@ public class SignUpLogin {
         showLoginPage();
     }
 
+
+
+
+
     private void showLoginPage() {
         frame = new JFrame("Login");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,38 +45,38 @@ public class SignUpLogin {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
         titlePanel.add(titleLabel);
         frame.add(titlePanel, BorderLayout.NORTH);
-
+    
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
-
+    
         gbc.gridx = 0;
         gbc.gridy = 0;
         JLabel usernameLabel = new JLabel("Username:");
         usernameLabel.setFont(new Font("Arial", Font.BOLD, 18));
         formPanel.add(usernameLabel, gbc);
-
+    
         gbc.gridx = 1;
         gbc.gridy = 0;
         JTextField usernameField = new JTextField(20);
         usernameField.setFont(new Font("Arial", Font.PLAIN, 18));
         usernameField.setPreferredSize(new Dimension(250, 30));
         formPanel.add(usernameField, gbc);
-
+    
         gbc.gridx = 0;
         gbc.gridy = 1;
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("Arial", Font.BOLD, 18));
         formPanel.add(passwordLabel, gbc);
-
+    
         gbc.gridx = 1;
         gbc.gridy = 1;
         JPasswordField passwordField = new JPasswordField(20);
         passwordField.setFont(new Font("Arial", Font.PLAIN, 18));
         passwordField.setPreferredSize(new Dimension(250, 30));
         formPanel.add(passwordField, gbc);
-
+    
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         JButton loginButton = new JButton("Login");
@@ -94,7 +98,20 @@ public class SignUpLogin {
         loginButton.setForeground(Color.WHITE);
         loginButton.setFont(new Font("Arial", Font.BOLD, 18));
         loginButton.setPreferredSize(new Dimension(120, 40));
-
+    
+        buttonPanel.add(loginButton);
+    
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        formPanel.add(buttonPanel, gbc);
+    
+        JPanel signUpPanel = new JPanel();
+        signUpPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        JLabel signUpLabel = new JLabel("Don't have an account?");
+        signUpLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        signUpPanel.add(signUpLabel);
+    
         JButton signUpButton = new JButton("Sign Up");
         signUpButton.addActionListener(new ActionListener() {
             @Override
@@ -105,22 +122,21 @@ public class SignUpLogin {
         });
         signUpButton.setBackground(Color.decode("#4CAF50"));
         signUpButton.setForeground(Color.WHITE);
-        signUpButton.setFont(new Font("Arial", Font.BOLD, 18));
-        signUpButton.setPreferredSize(new Dimension(120, 40));
-
-        buttonPanel.add(loginButton);
-        buttonPanel.add(signUpButton);
-
+        signUpButton.setFont(new Font("Arial", Font.BOLD, 14));
+        signUpButton.setPreferredSize(new Dimension(90, 30));
+        signUpPanel.add(signUpButton);
+    
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 2;
-        formPanel.add(buttonPanel, gbc);
-
+        formPanel.add(signUpPanel, gbc);
+    
         frame.add(formPanel, BorderLayout.CENTER);
-        frame.setSize(600, 500);
+        frame.setSize(600, 550);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    
 
     private void showSignUpPage() {
         frame = new JFrame("Sign Up");
