@@ -1,0 +1,164 @@
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+class User {
+    String username;
+    String password;
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+}
+
+public class SignUpLogin {
+    private JFrame frame;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private List<User> users = new ArrayList<>();
+
+    public SignUpLogin() {
+        loadUsers();
+
+        frame = new JFrame("Sign Up/Login");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+
+        // Create a panel with a title
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new FlowLayout());
+        JLabel titleLabel = new JLabel("Sign Up/Login");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 36)); // Increased font size
+        titlePanel.add(titleLabel);
+        frame.add(titlePanel, BorderLayout.NORTH);
+
+        // Create a panel for the form
+        JPanel formPanel = new JPanel();
+        formPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Increased font size
+        formPanel.add(usernameLabel, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        usernameField = new JTextField(20);
+        usernameField.setFont(new Font("Arial", Font.PLAIN, 18)); // Increased font size
+        usernameField.setPreferredSize(new Dimension(250, 30)); // Increased field size
+        formPanel.add(usernameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setFont(new Font("Arial", Font.BOLD, 18)); // Increased font size
+        formPanel.add(passwordLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        passwordField = new JPasswordField(20);
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 18)); // Increased font size
+        passwordField.setPreferredSize(new Dimension(250, 30)); // Increased field size
+        formPanel.add(passwordField, gbc);
+        // Create a panel for the buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+        JButton signUpButton = new JButton("Sign Up");
+        signUpButton.addActionListener(new SignUpActionListener());
+        signUpButton.setBackground(Color.decode("#4CAF50"));
+        signUpButton.setForeground(Color.WHITE);
+        signUpButton.setFont(new Font("Arial", Font.BOLD, 18)); // Increased font size
+        signUpButton.setPreferredSize(new Dimension(120, 40)); // Increased button size
+        JButton loginButton = new JButton("Login");
+        loginButton.addActionListener(new LoginActionListener());
+        loginButton.setBackground(Color.decode("#03A9F4"));
+        loginButton.setForeground(Color.WHITE);
+        loginButton.setFont(new Font("Arial", Font.BOLD, 18)); // Increased font size
+        loginButton.setPreferredSize(new Dimension(120, 40)); // Increased button size
+        buttonPanel.add(signUpButton);
+        buttonPanel.add(loginButton);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        formPanel.add(buttonPanel, gbc);
+
+        frame.add(formPanel, BorderLayout.CENTER);
+        frame.setSize(600, 500); // Increased frame size
+        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+
+    
+    }
+
+    private void loadUsers() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))){
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 2) {
+                    User user = new User(parts[0], parts[1]);
+                    users.add(user);
+                }
+            }
+        } catch (IOException e) {
+            // Handle error
+        }
+    }
+
+    private void saveUsers() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("users.txt"))) {
+            for (User user : users) {
+                writer.write(user.username + "," + user.password);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            // Handle error
+        }
+    }
+
+    private class SignUpActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+            for (User user : users) {
+                if (user.username.equals(username)) {
+                    JOptionPane.showMessageDialog(null, "Username already exists");
+                    return;
+                }
+            }
+            User user = new User(username, password);
+            users.add(user);
+            saveUsers();
+            JOptionPane.showMessageDialog(null, "Sign up successful");
+        }
+    }
+
+    private class LoginActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+            for (User user : users) {
+                if (user.username.equals(username) && user.password.equals(password)) {
+                    JOptionPane.showMessageDialog(null, "Login successful");
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Invalid username or password");
+        }
+    }
+
+    public static void main(String[] args) {
+        new SignUpLogin();
+    }
+}
