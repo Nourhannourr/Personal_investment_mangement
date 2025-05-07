@@ -173,6 +173,7 @@ public class AssetManagerGUI {
             JButton addButton = new JButton("Add");
             JButton editButton = new JButton("Edit");
             JButton removeButton = new JButton("Remove");
+            JButton zakatButton = new JButton("Calculate Zakat");
 
             Font btnFont = new Font("Segoe UI", Font.BOLD, 14);
             addButton.setFont(btnFont);
@@ -192,6 +193,15 @@ public class AssetManagerGUI {
             buttonPanel.add(removeButton);
 
             mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+            zakatButton.setFont(btnFont);
+            zakatButton.setBackground(new Color(172,100, 186));
+            zakatButton.setForeground(Color.WHITE);
+            JPanel extraButtonsPanel = new JPanel(new GridLayout(1, 3, 10, 0));
+            extraButtonsPanel.add(zakatButton);
+           
+            mainPanel.add(extraButtonsPanel, BorderLayout.NORTH); // Or wherever fits your layout
+
 
             // ---------- Action Listeners ----------
             addButton.addActionListener(e -> {
@@ -245,7 +255,13 @@ public class AssetManagerGUI {
                     JOptionPane.showMessageDialog(frame, "Select an asset to edit.");
                 }
             });
-
+            zakatButton.addActionListener(e -> {
+                double total = user.getAssets().stream().mapToDouble(a -> a.value).sum();
+                double zakat = total * 0.025;
+                JOptionPane.showMessageDialog(frame, String.format("Total Value: $%.2f\nZakat (2.5%%): $%.2f", total, zakat));
+            });
+            
+           
             // ---------- Final ----------
             frame.setContentPane(mainPanel);
             frame.setVisible(true);
