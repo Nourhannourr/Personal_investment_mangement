@@ -16,11 +16,12 @@ public class AccountConnector extends JFrame {
         // ==== Bank Account Tab ====
         JPanel bankPanel = createStyledPanel();
         bankPanel.add(createSectionLabel("Connect Your Bank Account"));
-
         String[] banks = {"Select Bank", "Chase", "Bank of America", "Wells Fargo"};
+        
         JComboBox<String> bankDropdown = new JComboBox<>(banks);
         JTextField bankUsernameField = createTextField();
         JPasswordField bankPasswordField = new JPasswordField();
+        JPasswordField bankConfirmPasswordField = new JPasswordField();
         JTextField cardField = createTextField();
         JTextField otpField = createTextField();
         JButton connectBankBtn = createButton("Connect Bank Account");
@@ -28,6 +29,7 @@ public class AccountConnector extends JFrame {
         bankPanel.add(createLabeledField("Bank:", bankDropdown));
         bankPanel.add(createLabeledField("Username:", bankUsernameField));
         bankPanel.add(createLabeledField("Password:", bankPasswordField));
+        bankPanel.add(createLabeledField("Confirm Password:", bankConfirmPasswordField));
         bankPanel.add(createLabeledField("Card Number:", cardField));
         bankPanel.add(createLabeledField("OTP Code:", otpField));
         bankPanel.add(connectBankBtn);
@@ -36,18 +38,16 @@ public class AccountConnector extends JFrame {
             String bank = (String) bankDropdown.getSelectedItem();
             String username = bankUsernameField.getText().trim();
             String password = new String(bankPasswordField.getPassword()).trim();
+            String confirmPassword = new String(bankConfirmPasswordField.getPassword()).trim();
             String card = cardField.getText().trim();
             String otp = otpField.getText().trim();
 
             if (bankDropdown.getSelectedIndex() == 0 || username.isEmpty() || password.isEmpty() || card.isEmpty() || otp.isEmpty()) {
                 showError("Please fill in all fields.");
+            } else if (!password.equals(confirmPassword)) {
+                showError("Passwords do not match.");
             } else {
-                saveToFile("bank_accounts.txt",
-                        "Bank: " + bank +
-                                ", Username: " + username +
-                                ", Password: " + password +
-                                ", Card: " + card +
-                                ", OTP: " + otp);
+                saveToFile("bank_accounts.txt", "Bank: " + bank + ", Username: " + username + ", Password: " + password + ", Card: " + card + ", OTP: " + otp);
                 showSuccess("Bank account linked and saved successfully!");
             }
         });
@@ -55,17 +55,18 @@ public class AccountConnector extends JFrame {
         // ==== Stock Account Tab ====
         JPanel stockPanel = createStyledPanel();
         stockPanel.add(createSectionLabel("Connect Your Stock Market Account"));
-
         String[] platforms = {"Select Platform", "Robinhood", "E*TRADE", "Fidelity"};
         JComboBox<String> platformDropdown = new JComboBox<>(platforms);
         JTextField usernameField = createTextField();
         JPasswordField passwordField = new JPasswordField();
+        JPasswordField confirmPasswordField = new JPasswordField();
         JTextField stockCardField = createTextField();
         JButton connectStockBtn = createButton("Connect Stock Account");
 
         stockPanel.add(createLabeledField("Platform:", platformDropdown));
         stockPanel.add(createLabeledField("Username:", usernameField));
         stockPanel.add(createLabeledField("Password:", passwordField));
+        stockPanel.add(createLabeledField("Confirm Password:", confirmPasswordField));
         stockPanel.add(createLabeledField("Card Number:", stockCardField));
         stockPanel.add(connectStockBtn);
 
@@ -73,16 +74,15 @@ public class AccountConnector extends JFrame {
             String platform = (String) platformDropdown.getSelectedItem();
             String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword()).trim();
+            String confirmPassword = new String(confirmPasswordField.getPassword()).trim();
             String card = stockCardField.getText().trim();
-
+            
             if (platformDropdown.getSelectedIndex() == 0 || username.isEmpty() || password.isEmpty() || card.isEmpty()) {
                 showError("Please fill in all fields.");
+            } else if (!password.equals(confirmPassword)) {
+                showError("Passwords do not match.");
             } else {
-                saveToFile("stock_accounts.txt",
-                        "Platform: " + platform +
-                                ", Username: " + username +
-                                ", Password: " + password +
-                                ", Card: " + card);
+                saveToFile("stock_accounts.txt", "Platform: " + platform + ", Username: " + username + ", Password: " + password + ", Card: " + card);
                 showSuccess("Stock account linked and saved successfully!");
             }
         });
