@@ -18,13 +18,7 @@ public class MainApp {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Create buttons for different functionalities
-        JButton signUpLoginButton = createButton("SignUp/Login");
-        signUpLoginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new SignUpLogin();
-            }
-        });
+        
 
         JButton assetManagerButton = createButton("Asset Manager");
         assetManagerButton.addActionListener(new ActionListener() {
@@ -43,7 +37,6 @@ public class MainApp {
         });
 
         // Add buttons to the center panel
-        centerPanel.add(signUpLoginButton);
         centerPanel.add(assetManagerButton);
         centerPanel.add(AccountConnectorButton);
 
