@@ -37,12 +37,12 @@ class Asset {
     }
 }
 
-class User {
+class User1 {
     String username;
     List<Asset> assets = new ArrayList<>();
     private final String filePath = "assets.txt";
 
-    public User(String username) {
+    public User1(String username) {
         this.username = username;
         loadAssetsFromFile();
     }
@@ -101,7 +101,7 @@ class User {
 public class AssetManagerGUI {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            User user = new User("mohamed");
+            User1 user = new User1("mohamed");
 
             JFrame frame = new JFrame("💼 Asset Manager");
             frame.setSize(600, 500);
