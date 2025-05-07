@@ -87,7 +87,12 @@ public class SignUpLogin {
                 String password = new String(passwordField.getPassword());
                 for (User user : users) {
                     if (user.username.equals(username) && user.password.equals(password)) {
-                        JOptionPane.showMessageDialog(null, "Login successful");
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                new MainApp();
+                            }
+                        });
                         return;
                     }
                 }
