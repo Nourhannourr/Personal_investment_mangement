@@ -268,21 +268,6 @@ public class SignUpLogin {
     signUpButton.setFont(new Font("Arial", Font.BOLD, 18));
     signUpButton.setPreferredSize(new Dimension(120, 40));
 
-    // JButton loginButton = new JButton("Login");
-    // loginButton.addActionListener(new ActionListener() {
-    //     @Override
-    //     public void actionPerformed(ActionEvent e) {
-    //         frame.dispose();
-    //         showLoginPage();
-    //     }
-    // });
-    // loginButton.setBackground(Color.decode("#03A9F4"));
-    // loginButton.setForeground(Color.WHITE);
-    // loginButton.setFont(new Font("Arial", Font.BOLD, 18));
-    // loginButton.setPreferredSize(new Dimension(120, 40));
-
-    
-    // buttonPanel.add(loginButton);
     
     buttonPanel.add(signUpButton);
 
