@@ -261,7 +261,6 @@ public class AssetManagerGUI {
                 JOptionPane.showMessageDialog(frame, String.format("Total Value: $%.2f\nZakat (2.5%%): $%.2f", total, zakat));
             });
             
-           
             // ---------- Final ----------
             frame.setContentPane(mainPanel);
             frame.setVisible(true);
