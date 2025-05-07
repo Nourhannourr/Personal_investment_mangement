@@ -7,7 +7,7 @@ public class AccountConnector extends JFrame {
 
     public AccountConnector() {
         setTitle("Bank & Stock Account Connector");
-        setSize(500, 500);
+        setSize(500 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
