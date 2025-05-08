@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+// this class make a GUI to manage assets (Edit , Add , Delete and Calculate Zakat)
 class Asset {
     String name;
     double value;
@@ -47,11 +48,13 @@ class User1 {
         loadAssetsFromFile();
     }
 
+    // add new assets
     public void addAsset(Asset asset) {
         assets.add(asset);
         saveAllAssetsToFile();
     }
 
+    //remove assets
     public void removeAsset(int index) {
         if (index >= 0 && index < assets.size()) {
             assets.remove(index);
@@ -59,6 +62,7 @@ class User1 {
         }
     }
 
+    // edit assets
     public void editAsset(int index, Asset newAsset) {
         if (index >= 0 && index < assets.size()) {
             assets.set(index, newAsset);
@@ -70,6 +74,7 @@ class User1 {
         return assets;
     }
 
+    // save assets in file (assets.txt)
     private void saveAllAssetsToFile() {
         try (FileWriter fw = new FileWriter(filePath)) {
             for (Asset asset : assets) {
@@ -80,6 +85,7 @@ class User1 {
         }
     }
 
+    //load data from file
     private void loadAssetsFromFile() {
         File file = new File(filePath);
         if (!file.exists()) return;
@@ -99,6 +105,8 @@ class User1 {
 }
 
 public class AssetManagerGUI {
+
+    // MAIN
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             User1 user = new User1("mohamed");
@@ -134,6 +142,7 @@ public class AssetManagerGUI {
             valueLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
             JTextField valueField = new JTextField(10);
 
+            // Positions
             gbc.gridx = 0; gbc.gridy = 0;
             inputPanel.add(nameLabel, gbc);
             gbc.gridx = 1;
@@ -203,7 +212,9 @@ public class AssetManagerGUI {
             mainPanel.add(extraButtonsPanel, BorderLayout.NORTH); // Or wherever fits your layout
 
 
-            // ---------- Action Listeners ----------
+        // ---------- Action Listeners ----------
+
+            // action listener for add button button
             addButton.addActionListener(e -> {
                 String name = nameField.getText();
                 double value;
@@ -223,6 +234,7 @@ public class AssetManagerGUI {
                 valueField.setText("");
             });
 
+            // action listener for remove assets button
             removeButton.addActionListener(e -> {
                 int selectedIndex = assetList.getSelectedIndex();
                 if (selectedIndex != -1) {
@@ -235,6 +247,7 @@ public class AssetManagerGUI {
                 }
             });
 
+            // action listener for edit assets button
             editButton.addActionListener(e -> {
                 int selectedIndex = assetList.getSelectedIndex();
                 if (selectedIndex != -1) {
@@ -255,12 +268,15 @@ public class AssetManagerGUI {
                     JOptionPane.showMessageDialog(frame, "Select an asset to edit.");
                 }
             });
+
+            // action listener for calculate zakat button
             zakatButton.addActionListener(e -> {
                 double total = user.getAssets().stream().mapToDouble(a -> a.value).sum();
                 double zakat = total * 0.025;
                 JOptionPane.showMessageDialog(frame, String.format("Total Value: $%.2f\nZakat (2.5%%): $%.2f", total, zakat));
             });
             
+           
             // ---------- Final ----------
             frame.setContentPane(mainPanel);
             frame.setVisible(true);
