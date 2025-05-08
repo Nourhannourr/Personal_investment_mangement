@@ -1,13 +1,17 @@
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.*;
 
+
+// this class maake user can connect bank account and stock market
 public class AccountConnector extends JFrame {
 
     public AccountConnector() {
         setTitle("Bank & Stock Account Connector");
-        setSize(500 ,500);
+        setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -16,7 +20,7 @@ public class AccountConnector extends JFrame {
         // ==== Bank Account Tab ====
         JPanel bankPanel = createStyledPanel();
         bankPanel.add(createSectionLabel("Connect Your Bank Account"));
-        String[] banks = {"Select Bank", "Chase", "Bank of America", "Wells Fargo"};
+        String[] banks = {"Select Bank", "Al-Ahli", "Bank of America", "CIB" , "Banque Misr" , "Bank of Alexandria"};
         
         JComboBox<String> bankDropdown = new JComboBox<>(banks);
         JTextField bankUsernameField = createTextField();
@@ -34,6 +38,7 @@ public class AccountConnector extends JFrame {
         bankPanel.add(createLabeledField("OTP Code:", otpField));
         bankPanel.add(connectBankBtn);
 
+        // In the bank account tab action listener
         connectBankBtn.addActionListener(e -> {
             String bank = (String) bankDropdown.getSelectedItem();
             String username = bankUsernameField.getText().trim();
@@ -43,14 +48,20 @@ public class AccountConnector extends JFrame {
             String otp = otpField.getText().trim();
 
             if (bankDropdown.getSelectedIndex() == 0 || username.isEmpty() || password.isEmpty() || card.isEmpty() || otp.isEmpty()) {
-                showError("Please fill in all fields.");
-            } else if (!password.equals(confirmPassword)) {
-                showError("Passwords do not match.");
-            } else {
+                showError("Please fill in all fields.");                // make sure that user fills all fields 
+            } 
+            else if (!password.equals(confirmPassword)) {
+                showError("Passwords do not match.");                   // make sure that confirmation password = password
+            } 
+            else if (!checkUsernameExists(username)) {
+                showError("Username does not exist.");                  // make sure user already has an account
+            } 
+            else {
                 saveToFile("bank_accounts.txt", "Bank: " + bank + ", Username: " + username + ", Password: " + password + ", Card: " + card + ", OTP: " + otp);
                 showSuccess("Bank account linked and saved successfully!");
             }
         });
+
 
         // ==== Stock Account Tab ====
         JPanel stockPanel = createStyledPanel();
@@ -70,18 +81,24 @@ public class AccountConnector extends JFrame {
         stockPanel.add(createLabeledField("Card Number:", stockCardField));
         stockPanel.add(connectStockBtn);
 
+        // In the stock account tab action listener
         connectStockBtn.addActionListener(e -> {
             String platform = (String) platformDropdown.getSelectedItem();
             String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword()).trim();
             String confirmPassword = new String(confirmPasswordField.getPassword()).trim();
             String card = stockCardField.getText().trim();
-            
+
             if (platformDropdown.getSelectedIndex() == 0 || username.isEmpty() || password.isEmpty() || card.isEmpty()) {
-                showError("Please fill in all fields.");
-            } else if (!password.equals(confirmPassword)) {
-                showError("Passwords do not match.");
-            } else {
+                showError("Please fill in all fields.");            // make sure that user fills all fields 
+            } 
+            else if (!password.equals(confirmPassword)) {                   
+                showError("Passwords do not match.");               // make sure that confirmation password = password
+            }
+            else if (!checkUsernameExists(username)) {                      // make sure user already has an account
+                showError("Username does not exist.");
+            } 
+            else {
                 saveToFile("stock_accounts.txt", "Platform: " + platform + ", Username: " + username + ", Password: " + password + ", Card: " + card);
                 showSuccess("Stock account linked and saved successfully!");
             }
@@ -93,7 +110,8 @@ public class AccountConnector extends JFrame {
         add(tabbedPane);
     }
 
-    // ========== UI Helpers ==========
+
+/* =============================================== User Interface Helpers ================================================ */ 
     private JPanel createStyledPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -119,12 +137,14 @@ public class AccountConnector extends JFrame {
         return panel;
     }
 
+    // Create Fields for form with style
     private JTextField createTextField() {
         JTextField field = new JTextField();
         field.setPreferredSize(new Dimension(200, 30));
         return field;
     }
 
+    // Create buttons with style
     private JButton createButton(String text) {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -134,6 +154,7 @@ public class AccountConnector extends JFrame {
         return button;
     }
 
+    // after operations display successful message or faild message
     private void showSuccess(String message) {
         JOptionPane.showMessageDialog(this, message, "Success", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -142,6 +163,7 @@ public class AccountConnector extends JFrame {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    // Save data in file
     private void saveToFile(String filename, String content) {
         try (FileWriter fw = new FileWriter(filename, true)) {
             fw.write(content + System.lineSeparator());
@@ -149,6 +171,22 @@ public class AccountConnector extends JFrame {
             showError("Error saving to file: " + e.getMessage());
         }
     }
+
+    // Make sure that user who need  connect accounts already has an account
+    private boolean checkUsernameExists(String username) {
+        try (BufferedReader br = new BufferedReader(new FileReader("users.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.contains(username)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            showError("Error reading from file: " + e.getMessage());
+        }
+        return false;
+    }
+
 
     // ========== Main ==========
     public static void main(String[] args) {
