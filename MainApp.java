@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
+// this file is a dashboar example wheen user login this page display for him
 public class MainApp {
     private JFrame frame;
 
@@ -17,10 +19,11 @@ public class MainApp {
         centerPanel.setLayout(new GridLayout(3, 1, 10, 10));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Create buttons for different functionalities
-        
-
+    // Create buttons for different functionalities
+        // button for asset manager
         JButton assetManagerButton = createButton("Asset Manager");
+
+        // Action listener
         assetManagerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -28,7 +31,10 @@ public class MainApp {
             }
         });
 
+        // button for Account Connector
         JButton AccountConnectorButton = createButton("Account Connector");
+
+        // Action listener
         AccountConnectorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -68,6 +74,7 @@ public class MainApp {
         return button;
     }
 
+    // Main
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
